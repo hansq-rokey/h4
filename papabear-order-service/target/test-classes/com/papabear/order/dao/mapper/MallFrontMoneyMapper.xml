@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallFrontMoneyDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallFrontMoney" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="front_number" property="frontNumber" jdbcType="CHAR" />
+    <result column="pay_number" property="payNumber" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="invalid" property="invalid" jdbcType="TINYINT" />
+    <result column="source" property="source" jdbcType="TINYINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="bx_num" property="bxNum" jdbcType="VARCHAR" />
+    <result column="front_money" property="frontMoney" jdbcType="REAL" />
+    <result column="province_id" property="provinceId" jdbcType="BIGINT" />
+    <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="BIGINT" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="county_id" property="countyId" jdbcType="BIGINT" />
+    <result column="county_name" property="countyName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, front_number, pay_number, remark, user_id, status, create_date_time, update_time, 
+    invalid, source, user_name, bx_num, front_money, province_id, province_name, city_id, 
+    city_name, county_id, county_name, address, name, tel
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_front_money
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="queryDeposits" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_front_money
+    where user_id = #{userId,jdbcType=BIGINT}
+    <if test="status!=null">
+    	and status = #{status,jdbcType=TINYINT}
+    </if>
+  </select>
+  
+  <select id="queryDepositsCount"  resultType="int">
+    select 
+    	count(*)
+    from tbl_mall_front_money
+        where user_id = #{userId,jdbcType=BIGINT}
+    <if test="status!=null">
+    	and status = #{status,jdbcType=TINYINT}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_front_money
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallFrontMoney" >
+    insert into tbl_mall_front_money (id, front_number, pay_number, 
+      remark, user_id, status, 
+      create_date_time, update_time, invalid, 
+      source, user_name, bx_num, 
+      front_money, province_id, province_name, 
+      city_id, city_name, county_id, 
+      county_name, address, name, 
+      tel)
+    values (#{id,jdbcType=BIGINT}, #{frontNumber,jdbcType=CHAR}, #{payNumber,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{createDateTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{invalid,jdbcType=TINYINT}, 
+      #{source,jdbcType=TINYINT}, #{userName,jdbcType=VARCHAR}, #{bxNum,jdbcType=VARCHAR}, 
+      #{frontMoney,jdbcType=REAL}, #{provinceId,jdbcType=BIGINT}, #{provinceName,jdbcType=VARCHAR}, 
+      #{cityId,jdbcType=BIGINT}, #{cityName,jdbcType=VARCHAR}, #{countyId,jdbcType=BIGINT}, 
+      #{countyName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallFrontMoney" >
+    insert into tbl_mall_front_money
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="frontNumber != null" >
+        front_number,
+      </if>
+      <if test="payNumber != null" >
+        pay_number,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="invalid != null" >
+        invalid,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="bxNum != null" >
+        bx_num,
+      </if>
+      <if test="frontMoney != null" >
+        front_money,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
+      </if>
+      <if test="provinceName != null" >
+        province_name,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="cityName != null" >
+        city_name,
+      </if>
+      <if test="countyId != null" >
+        county_id,
+      </if>
+      <if test="countyName != null" >
+        county_name,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="frontNumber != null" >
+        #{frontNumber,jdbcType=CHAR},
+      </if>
+      <if test="payNumber != null" >
+        #{payNumber,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null" >
+        #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=TINYINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="bxNum != null" >
+        #{bxNum,jdbcType=VARCHAR},
+      </if>
+      <if test="frontMoney != null" >
+        #{frontMoney,jdbcType=REAL},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=BIGINT},
+      </if>
+      <if test="provinceName != null" >
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="countyId != null" >
+        #{countyId,jdbcType=BIGINT},
+      </if>
+      <if test="countyName != null" >
+        #{countyName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallFrontMoney" >
+    update tbl_mall_front_money
+    <set >
+      <if test="frontNumber != null" >
+        front_number = #{frontNumber,jdbcType=CHAR},
+      </if>
+      <if test="payNumber != null" >
+        pay_number = #{payNumber,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null" >
+        invalid = #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=TINYINT},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="bxNum != null" >
+        bx_num = #{bxNum,jdbcType=VARCHAR},
+      </if>
+      <if test="frontMoney != null" >
+        front_money = #{frontMoney,jdbcType=REAL},
+      </if>
+      <if test="provinceId != null" >
+        province_id = #{provinceId,jdbcType=BIGINT},
+      </if>
+      <if test="provinceName != null" >
+        province_name = #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="countyId != null" >
+        county_id = #{countyId,jdbcType=BIGINT},
+      </if>
+      <if test="countyName != null" >
+        county_name = #{countyName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallFrontMoney" >
+    update tbl_mall_front_money
+    set front_number = #{frontNumber,jdbcType=CHAR},
+      pay_number = #{payNumber,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=TINYINT},
+      source = #{source,jdbcType=TINYINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      bx_num = #{bxNum,jdbcType=VARCHAR},
+      front_money = #{frontMoney,jdbcType=REAL},
+      province_id = #{provinceId,jdbcType=BIGINT},
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=BIGINT},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      county_id = #{countyId,jdbcType=BIGINT},
+      county_name = #{countyName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+    <update id="updateStatus" parameterType="com.papabear.order.entity.MallFrontMoney" >
+    update tbl_mall_front_money
+    set status = #{status,jdbcType=TINYINT},
+
+    where user_id = #{userId,jdbcType=BIGINT} and front_number = #{depositNumber,jdbcType=CHAR}
+  </update>
+</mapper>

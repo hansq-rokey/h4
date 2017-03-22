@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallOrderItemDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallOrderItem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="order_number" property="orderNumber" jdbcType="CHAR" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_title" property="productTitle" jdbcType="VARCHAR" />
+    <result column="product_feature" property="productFeature" jdbcType="VARCHAR" />
+    <result column="product_model_format_id" property="productModelFormatId" jdbcType="BIGINT" />
+    <result column="product_model_format_name" property="productModelFormatName" jdbcType="VARCHAR" />
+    <result column="unit_price" property="unitPrice" jdbcType="REAL" />
+    <result column="discount_unit_price" property="discountUnitPrice" jdbcType="REAL" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="is_custom_made" property="isCustomMade" jdbcType="TINYINT" />
+    <result column="sended_num" property="sendedNum" jdbcType="INTEGER" />
+    <result column="is_use_inviteCode" property="isUseInvitecode" jdbcType="TINYINT" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="total_price" property="totalPrice" jdbcType="REAL" />
+    <result column="tag_code" property="tagCode" jdbcType="INTEGER" />
+    <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, order_number, product_id, product_title, product_feature, product_model_format_id, 
+    product_model_format_name, unit_price, discount_unit_price, num, is_custom_made, 
+    sended_num, is_use_inviteCode,unit, total_price, tag_code, tag_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_order_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="queryOrderItems" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_order_item
+    where 
+    	order_number=#{orderNumber,jdbcType=CHAR}
+	<if test="userId!=null">
+		and user_id=#{userId,jdbcType=BIGINT}
+	</if>
+  </select>
+  <!-- 查询详细start -->
+  <select id="getByOrderNumberAndFormatId" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_order_item
+    where order_number = #{orderNumber} and product_model_format_id=#{formatId}
+  </select>
+  <!-- 查询详细end -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_order_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallOrderItem" >
+    insert into tbl_mall_order_item (id, user_id, order_number, 
+      product_id, product_title, product_feature, 
+      product_model_format_id, product_model_format_name, 
+      unit_price, discount_unit_price, num, 
+      is_custom_made, sended_num, is_use_inviteCode, 
+      unit, total_price, tag_code, 
+      tag_name)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderNumber,jdbcType=CHAR}, 
+      #{productId,jdbcType=BIGINT}, #{productTitle,jdbcType=VARCHAR}, #{productFeature,jdbcType=VARCHAR}, 
+      #{productModelFormatId,jdbcType=BIGINT}, #{productModelFormatName,jdbcType=VARCHAR}, 
+      #{unitPrice,jdbcType=REAL}, #{discountUnitPrice,jdbcType=REAL}, #{num,jdbcType=INTEGER}, 
+      #{isCustomMade,jdbcType=TINYINT}, #{sendedNum,jdbcType=INTEGER}, #{isUseInvitecode,jdbcType=TINYINT}, 
+      #{unit,jdbcType=VARCHAR}, #{totalPrice,jdbcType=REAL}, #{tagCode,jdbcType=INTEGER}, 
+      #{tagName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallOrderItem" >
+    insert into tbl_mall_order_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productTitle != null" >
+        product_title,
+      </if>
+      <if test="productFeature != null" >
+        product_feature,
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id,
+      </if>
+      <if test="productModelFormatName != null" >
+        product_model_format_name,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="discountUnitPrice != null" >
+        discount_unit_price,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="isCustomMade != null" >
+        is_custom_made,
+      </if>
+      <if test="sendedNum != null" >
+        sended_num,
+      </if>
+      <if test="isUseInvitecode != null" >
+        is_use_inviteCode,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="tagCode != null" >
+        tag_code,
+      </if>
+      <if test="tagName != null" >
+        tag_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productTitle != null" >
+        #{productTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="productFeature != null" >
+        #{productFeature,jdbcType=VARCHAR},
+      </if>
+      <if test="productModelFormatId != null" >
+        #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatName != null" >
+        #{productModelFormatName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=REAL},
+      </if>
+      <if test="discountUnitPrice != null" >
+        #{discountUnitPrice,jdbcType=REAL},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isCustomMade != null" >
+        #{isCustomMade,jdbcType=TINYINT},
+      </if>
+      <if test="sendedNum != null" >
+        #{sendedNum,jdbcType=INTEGER},
+      </if>
+      <if test="isUseInvitecode != null" >
+        #{isUseInvitecode,jdbcType=TINYINT},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="tagCode != null" >
+        #{tagCode,jdbcType=INTEGER},
+      </if>
+      <if test="tagName != null" >
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallOrderItem" >
+    update tbl_mall_order_item
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productTitle != null" >
+        product_title = #{productTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="productFeature != null" >
+        product_feature = #{productFeature,jdbcType=VARCHAR},
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatName != null" >
+        product_model_format_name = #{productModelFormatName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=REAL},
+      </if>
+      <if test="discountUnitPrice != null" >
+        discount_unit_price = #{discountUnitPrice,jdbcType=REAL},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isCustomMade != null" >
+        is_custom_made = #{isCustomMade,jdbcType=TINYINT},
+      </if>
+      <if test="sendedNum != null" >
+        sended_num = #{sendedNum,jdbcType=INTEGER},
+      </if>
+      <if test="isUseInvitecode != null" >
+        is_use_inviteCode = #{isUseInvitecode,jdbcType=TINYINT},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="tagCode != null" >
+        tag_code = #{tagCode,jdbcType=INTEGER},
+      </if>
+      <if test="tagName != null" >
+        tag_name = #{tagName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallOrderItem" >
+    update tbl_mall_order_item
+    set user_id = #{userId,jdbcType=BIGINT},
+      order_number = #{orderNumber,jdbcType=CHAR},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_title = #{productTitle,jdbcType=VARCHAR},
+      product_feature = #{productFeature,jdbcType=VARCHAR},
+      product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      product_model_format_name = #{productModelFormatName,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=REAL},
+      discount_unit_price = #{discountUnitPrice,jdbcType=REAL},
+      num = #{num,jdbcType=INTEGER},
+      is_custom_made = #{isCustomMade,jdbcType=TINYINT},
+      sended_num = #{sendedNum,jdbcType=INTEGER},
+      is_use_inviteCode = #{isUseInvitecode,jdbcType=TINYINT},
+      unit = #{unit,jdbcType=VARCHAR},
+      total_price = #{totalPrice,jdbcType=REAL},
+      tag_code = #{tagCode,jdbcType=INTEGER},
+      tag_name = #{tagName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

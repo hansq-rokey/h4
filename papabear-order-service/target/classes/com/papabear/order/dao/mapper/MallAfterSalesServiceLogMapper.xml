@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallAfterSalesServiceLogDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallAfterSalesServiceLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="service_id" property="serviceId" jdbcType="BIGINT" />
+    <result column="admin_id" property="adminId" jdbcType="BIGINT" />
+    <result column="service_status" property="serviceStatus" jdbcType="TINYINT" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, service_id, admin_id, service_status, create_date_time, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 查询售后服务列表start -->
+  <select id="queryAfterSalesServiceLogs" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service_log
+    where service_id = #{serviceId,jdbcType=BIGINT}
+  </select>
+  <!-- 查询售后服务列表end -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_after_sales_service_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallAfterSalesServiceLog" >
+    insert into tbl_mall_after_sales_service_log (id, service_id, admin_id, 
+      service_status, create_date_time, status
+      )
+    values (#{id,jdbcType=BIGINT}, #{serviceId,jdbcType=BIGINT}, #{adminId,jdbcType=BIGINT}, 
+      #{serviceStatus,jdbcType=TINYINT}, #{createDateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallAfterSalesServiceLog" >
+    insert into tbl_mall_after_sales_service_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serviceId != null" >
+        service_id,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+      <if test="serviceStatus != null" >
+        service_status,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="serviceId != null" >
+        #{serviceId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="serviceStatus != null" >
+        #{serviceStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallAfterSalesServiceLog" >
+    update tbl_mall_after_sales_service_log
+    <set >
+      <if test="serviceId != null" >
+        service_id = #{serviceId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="serviceStatus != null" >
+        service_status = #{serviceStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallAfterSalesServiceLog" >
+    update tbl_mall_after_sales_service_log
+    set service_id = #{serviceId,jdbcType=BIGINT},
+      admin_id = #{adminId,jdbcType=BIGINT},
+      service_status = #{serviceStatus,jdbcType=TINYINT},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallAfterSalesServiceDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallAfterSalesService" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_number" property="orderNumber" jdbcType="CHAR" />
+    <result column="service_number" property="serviceNumber" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="invalid" property="invalid" jdbcType="TINYINT" />
+    <result column="service_type" property="serviceType" jdbcType="TINYINT" />
+    <result column="money" property="money" jdbcType="REAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="express_id" property="expressId" jdbcType="BIGINT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="refuse_memo" property="refuseMemo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_number, service_number, user_id, create_date_time, update_time, status, 
+    invalid, service_type, money, remark, express_id, description, refuse_memo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!-- 关联查询订单售后服务状态 -->
+  <select id="queryServiceByStatus" resultMap="BaseResultMap">
+  	select 
+  	s.order_number,s.status 
+  	from tbl_mall_after_sales_service s 
+  	left join tbl_mall_order o on s.order_number = o.order_number 
+	where o.status=#{status,jdbcType=TINYINT};
+  </select>
+  
+  <select id="getByOrderNumber" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service
+    where order_number = #{orderNumber,jdbcType=CHAR}
+  </select>
+  <!-- 查询售后服务列表 start-->
+  <select id="queryMallAfterSalesServiceByStatus" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service
+    where user_id = #{userId,jdbcType=BIGINT} and service_type=#{serviceType,jdbcType=TINYINT}
+    limit #{number,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+  <!-- end -->
+  
+  <!-- 关键词查询start -->
+  <select id="queryAfterSalesServicesCount" resultType="int">
+    select 
+    	count(*)
+    from tbl_mall_after_sales_service 
+    <where>
+    	<if test="status != null" >
+        	status = #{status,jdbcType=TINYINT}
+      	</if>
+      	<if test="serviceType != null" >
+	        and service_type = #{serviceType,jdbcType=TINYINT}
+	      </if>
+    	<if test="keywords!=null">
+    		and order_number like "%"#{keywords,jdbcType=CHAR}"%"
+    	</if>
+    	<if test="startTime!=null">
+    		and create_date_time &gt; #{startTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="endTime!=null">
+    		and create_date_time  &lt; #{endTime,jdbcType=TIMESTAMP}
+    	</if>
+    </where>
+  </select>
+  <select id="queryAfterSalesServices" resultMap="BaseResultMap">
+    select 
+    	<include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service 
+    <where>
+    	<if test="status != null" >
+        	status = #{status,jdbcType=TINYINT}
+      	</if>
+      	<if test="serviceType != null" >
+	        and service_type = #{serviceType,jdbcType=TINYINT}
+	      </if>
+    	<if test="keywords!=null">
+    		and order_number like "%"#{keywords,jdbcType=CHAR}"%"
+    	</if>
+    	<if test="startTime!=null">
+    		and create_date_time &gt; #{startTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="endTime!=null">
+    		and create_date_time  &lt; #{endTime,jdbcType=TIMESTAMP}
+    	</if>
+    </where>
+    limit #{number,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+  <!-- 关键词查询start -->
+  <select id="queryMallAfterSalesServicesCount" resultType="int">
+    select 
+    	count(*)
+    from tbl_mall_after_sales_service 
+    <where>
+    	<if test="status != null" >
+        	status in
+			<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+      	</if>
+      	<if test="serviceType != null" >
+	        and service_type = #{serviceType,jdbcType=TINYINT}
+	      </if>
+    	<if test="keywords!=null">
+    		and order_number like "%"#{keywords,jdbcType=CHAR}"%"
+    	</if>
+    	<if test="startTime!=null">
+    		and create_date_time &gt; #{startTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="endTime!=null">
+    		and create_date_time  &lt; #{endTime,jdbcType=TIMESTAMP}
+    	</if>
+    </where>
+  </select>
+  <select id="queryMallAfterSalesServices" resultMap="BaseResultMap">
+    select 
+    	<include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service 
+    <where>
+    	<if test="status != null" >
+        	status in
+			<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+      	</if>
+      	<if test="serviceType != null" >
+	        and service_type = #{serviceType,jdbcType=TINYINT}
+	      </if>
+    	<if test="keywords!=null">
+    		and order_number like "%"#{keywords,jdbcType=CHAR}"%"
+    	</if>
+    	<if test="startTime!=null">
+    		and create_date_time &gt; #{startTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="endTime!=null">
+    		and create_date_time  &lt; #{endTime,jdbcType=TIMESTAMP}
+    	</if>
+    </where>
+    limit #{number,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+  <!-- 关键词查询end -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_after_sales_service
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallAfterSalesService" useGeneratedKeys="true" keyProperty="id">
+    insert into tbl_mall_after_sales_service (id, order_number, service_number, 
+      user_id, create_date_time, update_time, 
+      status, invalid, service_type, 
+      money, remark, express_id, 
+      description, refuse_memo)
+    values (#{id,jdbcType=BIGINT}, #{orderNumber,jdbcType=CHAR}, #{serviceNumber,jdbcType=CHAR}, 
+      #{userId,jdbcType=BIGINT}, #{createDateTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{invalid,jdbcType=TINYINT}, #{serviceType,jdbcType=TINYINT}, 
+      #{money,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, #{expressId,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR}, #{refuseMemo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallAfterSalesService" >
+    insert into tbl_mall_after_sales_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="serviceNumber != null" >
+        service_number,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="invalid != null" >
+        invalid,
+      </if>
+      <if test="serviceType != null" >
+        service_type,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="expressId != null" >
+        express_id,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="refuseMemo != null" >
+        refuse_memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="serviceNumber != null" >
+        #{serviceNumber,jdbcType=CHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="invalid != null" >
+        #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="serviceType != null" >
+        #{serviceType,jdbcType=TINYINT},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=REAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null" >
+        #{expressId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="refuseMemo != null" >
+        #{refuseMemo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallAfterSalesService" >
+    update tbl_mall_after_sales_service
+    <set >
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="serviceNumber != null" >
+        service_number = #{serviceNumber,jdbcType=CHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="invalid != null" >
+        invalid = #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="serviceType != null" >
+        service_type = #{serviceType,jdbcType=TINYINT},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=REAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null" >
+        express_id = #{expressId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="refuseMemo != null" >
+        refuse_memo = #{refuseMemo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallAfterSalesService" >
+    update tbl_mall_after_sales_service
+    set order_number = #{orderNumber,jdbcType=CHAR},
+      service_number = #{serviceNumber,jdbcType=CHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      invalid = #{invalid,jdbcType=TINYINT},
+      service_type = #{serviceType,jdbcType=TINYINT},
+      money = #{money,jdbcType=REAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      express_id = #{expressId,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      refuse_memo = #{refuseMemo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

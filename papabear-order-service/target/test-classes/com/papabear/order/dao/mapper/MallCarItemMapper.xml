@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallCarItemDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallCarItem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_model_format_id" property="productModelFormatId" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="invalid" property="invalid" jdbcType="TINYINT" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="product_title" property="productTitle" jdbcType="VARCHAR" />
+    <result column="product_feature" property="productFeature" jdbcType="VARCHAR" />
+    <result column="product_model_format_name" property="productModelFormatName" jdbcType="VARCHAR" />
+    <result column="unit_price" property="unitPrice" jdbcType="REAL" />
+    <result column="discount_unit_price" property="discountUnitPrice" jdbcType="REAL" />
+    <result column="is_custom_made" property="isCustomMade" jdbcType="TINYINT" />
+    <result column="total_price" property="totalPrice" jdbcType="REAL" />
+    <result column="tag_code" property="tagCode" jdbcType="INTEGER" />
+    <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+	<result column="type" property="type" jdbcType="TINYINT" />    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, product_id, product_model_format_id, num, create_date_time, update_time, 
+    status, invalid,unit, product_title, product_feature, product_model_format_name, 
+    unit_price, discount_unit_price, is_custom_made, total_price, tag_code, tag_name,type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_car_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+   <!-- 查询选中的购物车中的商品 -->
+  <select id="queryPartCarItem" resultMap="BaseResultMap">
+  SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		tbl_mall_car_item car
+	WHERE
+		car.user_id = #{userId,jdbcType=BIGINT} and car.invalid=0 and car.id in
+    <foreach item="item" index="index" collection="carItemIdList" open="(" separator="," close=")">  
+        #{item}  
+    </foreach>
+  </select>
+  <!-- end -->
+  <!-- 根据规格和用户Id查询购物车 -->
+  <select id="getMallCarItem" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_car_item
+    where product_model_format_id = #{formatId,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT} and invalid=0
+  </select>
+  <!-- end -->
+  <select id="queryCarItemsByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		tbl_mall_car_item car
+	WHERE
+		car.user_id = #{userId,jdbcType=BIGINT} and car.invalid=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_car_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallCarItem"  keyProperty="id" useGeneratedKeys="true">
+    insert into tbl_mall_car_item (id, user_id, product_id, 
+      product_model_format_id, num, create_date_time, 
+      update_time, status, invalid, 
+      unit, product_title, product_feature, 
+      product_model_format_name, unit_price, discount_unit_price, 
+      is_custom_made, total_price, tag_code, 
+      tag_name,type)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, 
+      #{productModelFormatId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, #{createDateTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{invalid,jdbcType=TINYINT}, 
+      #{unit,jdbcType=VARCHAR}, #{productTitle,jdbcType=VARCHAR}, #{productFeature,jdbcType=VARCHAR}, 
+      #{productModelFormatName,jdbcType=VARCHAR}, #{unitPrice,jdbcType=REAL}, #{discountUnitPrice,jdbcType=REAL}, 
+      #{isCustomMade,jdbcType=TINYINT}, #{totalPrice,jdbcType=REAL}, #{tagCode,jdbcType=INTEGER}, 
+      #{tagName,jdbcType=VARCHAR},#{type,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallCarItem" keyProperty="id" useGeneratedKeys="true">
+    insert into tbl_mall_car_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="invalid != null" >
+        invalid,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="productTitle != null" >
+        product_title,
+      </if>
+      <if test="productFeature != null" >
+        product_feature,
+      </if>
+      <if test="productModelFormatName != null" >
+        product_model_format_name,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="discountUnitPrice != null" >
+        discount_unit_price,
+      </if>
+      <if test="isCustomMade != null" >
+        is_custom_made,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="tagCode != null" >
+        tag_code,
+      </if>
+      <if test="tagName != null" >
+        tag_name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="invalid != null" >
+        #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="productTitle != null" >
+        #{productTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="productFeature != null" >
+        #{productFeature,jdbcType=VARCHAR},
+      </if>
+      <if test="productModelFormatName != null" >
+        #{productModelFormatName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=REAL},
+      </if>
+      <if test="discountUnitPrice != null" >
+        #{discountUnitPrice,jdbcType=REAL},
+      </if>
+      <if test="isCustomMade != null" >
+        #{isCustomMade,jdbcType=TINYINT},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="tagCode != null" >
+        #{tagCode,jdbcType=INTEGER},
+      </if>
+      <if test="tagName != null" >
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallCarItem" >
+    update tbl_mall_car_item
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="invalid != null" >
+        invalid = #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="productTitle != null" >
+        product_title = #{productTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="productFeature != null" >
+        product_feature = #{productFeature,jdbcType=VARCHAR},
+      </if>
+      <if test="productModelFormatName != null" >
+        product_model_format_name = #{productModelFormatName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=REAL},
+      </if>
+      <if test="discountUnitPrice != null" >
+        discount_unit_price = #{discountUnitPrice,jdbcType=REAL},
+      </if>
+      <if test="isCustomMade != null" >
+        is_custom_made = #{isCustomMade,jdbcType=TINYINT},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="tagCode != null" >
+        tag_code = #{tagCode,jdbcType=INTEGER},
+      </if>
+      <if test="tagName != null" >
+        tag_name = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallCarItem" >
+    update tbl_mall_car_item
+    set user_id = #{userId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      num = #{num,jdbcType=INTEGER},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      invalid = #{invalid,jdbcType=TINYINT},
+      unit = #{unit,jdbcType=VARCHAR},
+      product_title = #{productTitle,jdbcType=VARCHAR},
+      product_feature = #{productFeature,jdbcType=VARCHAR},
+      product_model_format_name = #{productModelFormatName,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=REAL},
+      discount_unit_price = #{discountUnitPrice,jdbcType=REAL},
+      is_custom_made = #{isCustomMade,jdbcType=TINYINT},
+      total_price = #{totalPrice,jdbcType=REAL},
+      tag_code = #{tagCode,jdbcType=INTEGER},
+      tag_name = #{tagName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateCarNumIncrease">
+		update tbl_mall_car_item
+		<set>
+			num = num+1
+		</set>
+		where user_id =
+		#{userId,jdbcType=INTEGER} and
+		product_id =
+		#{productId,jdbcType=INTEGER} and
+		product_model_format_id =
+		#{formatId,jdbcType=INTEGER} and
+		invalid=#{invalid,jdbcType=TINYINT}
+	</update>
+	
+	<update id="updateCarNumReduce">
+		update tbl_mall_car_item
+		<set>
+			num = num-1
+		</set>
+		where user_id =
+		#{userId,jdbcType=INTEGER} and
+		product_id =
+		#{productId,jdbcType=INTEGER} and
+		product_model_format_id =
+		#{formatId,jdbcType=INTEGER} and
+		invalid=#{invalid,jdbcType=TINYINT}
+	</update>
+</mapper>

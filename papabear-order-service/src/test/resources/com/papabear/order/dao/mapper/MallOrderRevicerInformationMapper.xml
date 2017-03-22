@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallOrderRevicerInformationDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallOrderRevicerInformation" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="express_name" property="expressName" jdbcType="VARCHAR" />
+    <result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+    <result column="express_money" property="expressMoney" jdbcType="REAL" />
+    <result column="deliver_time_name" property="deliverTimeName" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="express_company_id" property="expressCompanyId" jdbcType="BIGINT" />
+    <result column="order_number" property="orderNumber" jdbcType="CHAR" />
+    <result column="deliver_time_value" property="deliverTimeValue" jdbcType="VARCHAR" />
+    <result column="reveive_user_name" property="reveiveUserName" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="tel_phone" property="telPhone" jdbcType="VARCHAR" />
+    <result column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+    <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="district_code" property="districtCode" jdbcType="VARCHAR" />
+    <result column="detail_address" property="detailAddress" jdbcType="VARCHAR" />
+    <result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+    <result column="district_name" property="districtName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, express_name, express_no, express_money, deliver_time_name, order_id, user_id, 
+    express_company_id, order_number, deliver_time_value, reveive_user_name, mobile_phone, 
+    tel_phone, province_code, province_name, city_code, create_date_time, update_time, 
+    city_name, district_code, detail_address, zipcode, district_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_order_revicer_information
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!-- 查询 -->
+  <select id="getOrderRevicerInformation" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_order_revicer_information
+    where 
+    	order_number = #{orderNumber,jdbcType=CHAR}
+    <if test="userId!=null">
+	    and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_order_revicer_information
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallOrderRevicerInformation" useGeneratedKeys="true" keyProperty="id">
+    insert into tbl_mall_order_revicer_information (id, express_name, express_no, 
+      express_money, deliver_time_name, order_id, 
+      user_id, express_company_id, order_number, 
+      deliver_time_value, reveive_user_name, mobile_phone, 
+      tel_phone, province_code, province_name, 
+      city_code, create_date_time, update_time, 
+      city_name, district_code, detail_address, 
+      zipcode, district_name)
+    values (#{id,jdbcType=BIGINT}, #{expressName,jdbcType=VARCHAR}, #{expressNo,jdbcType=VARCHAR}, 
+      #{expressMoney,jdbcType=REAL}, #{deliverTimeName,jdbcType=VARCHAR}, #{orderId,jdbcType=BIGINT}, 
+      #{userId,jdbcType=BIGINT}, #{expressCompanyId,jdbcType=BIGINT}, #{orderNumber,jdbcType=CHAR}, 
+      #{deliverTimeValue,jdbcType=VARCHAR}, #{reveiveUserName,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, 
+      #{telPhone,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, 
+      #{cityCode,jdbcType=VARCHAR}, #{createDateTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{cityName,jdbcType=VARCHAR}, #{districtCode,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}, 
+      #{zipcode,jdbcType=VARCHAR}, #{districtName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallOrderRevicerInformation" useGeneratedKeys="true" keyProperty="id">
+    insert into tbl_mall_order_revicer_information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="expressName != null" >
+        express_name,
+      </if>
+      <if test="expressNo != null" >
+        express_no,
+      </if>
+      <if test="expressMoney != null" >
+        express_money,
+      </if>
+      <if test="deliverTimeName != null" >
+        deliver_time_name,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="expressCompanyId != null" >
+        express_company_id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="deliverTimeValue != null" >
+        deliver_time_value,
+      </if>
+      <if test="reveiveUserName != null" >
+        reveive_user_name,
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone,
+      </if>
+      <if test="telPhone != null" >
+        tel_phone,
+      </if>
+      <if test="provinceCode != null" >
+        province_code,
+      </if>
+      <if test="provinceName != null" >
+        province_name,
+      </if>
+      <if test="cityCode != null" >
+        city_code,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="cityName != null" >
+        city_name,
+      </if>
+      <if test="districtCode != null" >
+        district_code,
+      </if>
+      <if test="detailAddress != null" >
+        detail_address,
+      </if>
+      <if test="zipcode != null" >
+        zipcode,
+      </if>
+      <if test="districtName != null" >
+        district_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="expressName != null" >
+        #{expressName,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null" >
+        #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="expressMoney != null" >
+        #{expressMoney,jdbcType=REAL},
+      </if>
+      <if test="deliverTimeName != null" >
+        #{deliverTimeName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="expressCompanyId != null" >
+        #{expressCompanyId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="deliverTimeValue != null" >
+        #{deliverTimeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="reveiveUserName != null" >
+        #{reveiveUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="telPhone != null" >
+        #{telPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null" >
+        #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceName != null" >
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtCode != null" >
+        #{districtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailAddress != null" >
+        #{detailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null" >
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallOrderRevicerInformation" >
+    update tbl_mall_order_revicer_information
+    <set >
+      <if test="expressName != null" >
+        express_name = #{expressName,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null" >
+        express_no = #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="expressMoney != null" >
+        express_money = #{expressMoney,jdbcType=REAL},
+      </if>
+      <if test="deliverTimeName != null" >
+        deliver_time_name = #{deliverTimeName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="expressCompanyId != null" >
+        express_company_id = #{expressCompanyId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="deliverTimeValue != null" >
+        deliver_time_value = #{deliverTimeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="reveiveUserName != null" >
+        reveive_user_name = #{reveiveUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="telPhone != null" >
+        tel_phone = #{telPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null" >
+        province_code = #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceName != null" >
+        province_name = #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtCode != null" >
+        district_code = #{districtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailAddress != null" >
+        detail_address = #{detailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        zipcode = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null" >
+        district_name = #{districtName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallOrderRevicerInformation" >
+    update tbl_mall_order_revicer_information
+    set express_name = #{expressName,jdbcType=VARCHAR},
+      express_no = #{expressNo,jdbcType=VARCHAR},
+      express_money = #{expressMoney,jdbcType=REAL},
+      deliver_time_name = #{deliverTimeName,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      express_company_id = #{expressCompanyId,jdbcType=BIGINT},
+      order_number = #{orderNumber,jdbcType=CHAR},
+      deliver_time_value = #{deliverTimeValue,jdbcType=VARCHAR},
+      reveive_user_name = #{reveiveUserName,jdbcType=VARCHAR},
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      tel_phone = #{telPhone,jdbcType=VARCHAR},
+      province_code = #{provinceCode,jdbcType=VARCHAR},
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      district_code = #{districtCode,jdbcType=VARCHAR},
+      detail_address = #{detailAddress,jdbcType=VARCHAR},
+      zipcode = #{zipcode,jdbcType=VARCHAR},
+      district_name = #{districtName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+   <update id="updateExpressNoByOrderNumber">
+    update tbl_mall_order_revicer_information
+    set express_no = #{expressNo}
+      where order_number = #{orderNumber}
+  </update>
+</mapper>

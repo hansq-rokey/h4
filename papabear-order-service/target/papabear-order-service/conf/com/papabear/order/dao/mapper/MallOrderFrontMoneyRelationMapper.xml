@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallOrderFrontMoneyRelationDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallOrderFrontMoneyRelation" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_number" property="orderNumber" jdbcType="CHAR" />
+    <result column="front_number" property="frontNumber" jdbcType="CHAR" />
+    <result column="front_money_id" property="frontMoneyId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_number, front_number, front_money_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_order_front_money_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_order_front_money_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallOrderFrontMoneyRelation" >
+    insert into tbl_mall_order_front_money_relation (id, order_number, front_number, 
+      front_money_id)
+    values (#{id,jdbcType=BIGINT}, #{orderNumber,jdbcType=CHAR}, #{frontNumber,jdbcType=CHAR}, 
+      #{frontMoneyId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallOrderFrontMoneyRelation" >
+    insert into tbl_mall_order_front_money_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="frontNumber != null" >
+        front_number,
+      </if>
+      <if test="frontMoneyId != null" >
+        front_money_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="frontNumber != null" >
+        #{frontNumber,jdbcType=CHAR},
+      </if>
+      <if test="frontMoneyId != null" >
+        #{frontMoneyId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallOrderFrontMoneyRelation" >
+    update tbl_mall_order_front_money_relation
+    <set >
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="frontNumber != null" >
+        front_number = #{frontNumber,jdbcType=CHAR},
+      </if>
+      <if test="frontMoneyId != null" >
+        front_money_id = #{frontMoneyId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallOrderFrontMoneyRelation" >
+    update tbl_mall_order_front_money_relation
+    set order_number = #{orderNumber,jdbcType=CHAR},
+      front_number = #{frontNumber,jdbcType=CHAR},
+      front_money_id = #{frontMoneyId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

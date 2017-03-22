@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallOrderDao">
+	<resultMap id="BaseResultMap" type="com.papabear.order.entity.MallOrder">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_number" property="orderNumber" jdbcType="CHAR" />
+		<result column="parent_order_number" property="parentOrderNumber" jdbcType="CHAR" />
+		<result column="pay_number" property="payNumber" jdbcType="CHAR" />
+		<result column="express_id" property="expressId" jdbcType="BIGINT" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="invalid" property="invalid" jdbcType="TINYINT" />
+		<result column="total_num" property="totalNum" jdbcType="INTEGER" />
+		<result column="total_price" property="totalPrice" jdbcType="REAL" />
+		<result column="discount_price" property="discountPrice" jdbcType="REAL" />
+		<result column="is_custom_made" property="isCustomMade" jdbcType="TINYINT" />
+		<result column="is_use_inviteCode" property="isUseInvitecode" jdbcType="TINYINT" />
+		<result column="source" property="source" jdbcType="TINYINT" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+	    <result column="bx_num" property="bxNum" jdbcType="VARCHAR" />
+	    <result column="is_make_bill" property="isMakeBill" jdbcType="TINYINT" />
+	    <result column="is_install" property="isInstall" jdbcType="TINYINT" />
+	    <result column="front_money" property="frontMoney" jdbcType="REAL" />
+	    <result column="is_use_front_money" property="isUseFrontMoney" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, order_number, parent_order_number, pay_number, express_id, remark, user_id, status,
+		create_date_time, update_time, invalid, total_num, total_price, discount_price, is_custom_made,
+		is_use_inviteCode,source, user_name, bx_num, is_make_bill, is_install, front_money, 
+    is_use_front_money	
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<select id="getmMallOrder" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order
+		where
+		order_number = #{orderNumber,jdbcType=CHAR}
+		<if test="userId!=null">
+			and user_id = #{userId,jdbcType=BIGINT}
+		</if>
+	</select>
+	<select id="getMallOrderByPayNumber" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order
+		where
+		pay_number = #{payNumber,jdbcType=CHAR}
+	</select>
+	<!-- 根据用户ID，状态查询订单列表，必须有分页 start -->
+	<select id="queryOrdersByUserIdAndStatus" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order
+		<where>
+			<if test="userId!=null">
+				user_id = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="status!=null">
+				and status in
+				<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		order by id desc 
+		limit #{numbers,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
+	<select id="queryOrdersByUserIdAndStatusCount" parameterType="java.util.Map" resultType="int">
+		select
+		count(*)
+		from tbl_mall_order
+		<where>
+			<if test="userId!=null">
+				user_id = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="status!=null">
+				and status in
+				<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 根据用户ID，状态查询订单列表，必须有分页 end -->
+	<!-- 搜索开始 -->
+	<select id="queryByParamtersCount" resultType="int">
+		select
+		count(*)
+		from tbl_mall_order as o
+		<where>
+			<if test="status!=null">
+				and status in
+				<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="isCustomMade!=null">
+				and is_custom_made =#{isCustomMade,jdbcType=TINYINT}
+			</if>
+			<if test="keywords!=null">
+				and (o.order_number like "%"#{keywords,jdbcType=CHAR}"%")
+			</if>
+			<if test="startTime!=null and endTime!=null">
+				and o.create_date_time &gt; #{startTime,jdbcType=TIMESTAMP} and o.create_date_time &lt; #{endTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+	<select id="queryByParamters" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order as o
+		<where>
+			<if test="status!=null">
+				and status in
+				<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="isCustomMade!=null">
+				and is_custom_made =#{isCustomMade,jdbcType=TINYINT}
+			</if>
+			<if test="keywords!=null">
+				and (o.order_number like "%"#{keywords,jdbcType=CHAR}"%")
+			</if>
+			<if test="startTime!=null and endTime!=null">
+				and o.create_date_time &gt; #{startTime,jdbcType=TIMESTAMP} and o.create_date_time &lt; #{endTime,jdbcType=TIMESTAMP}
+			</if>
+			order by o.id desc
+			limit #{numbers,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</where>
+	</select>
+	<!-- 搜索end -->
+	<!-- 私人订制列表开始 -->
+	<select id="queryCustomerOrderCount" resultType="int">
+		select
+		count(*)
+		from tbl_mall_order as o
+		<where>
+			<if test="status!=null">
+				and status in
+				<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="invalid!=null">
+				and o.invalid = #{invalid,jdbcType=TINYINT}
+			</if>
+			<if test="payType!=null">
+				and o.pay_type=#{payType}
+			</if>
+			<if test="isCustomMade!=null">
+				and is_custom_made =#{isCustomMade,jdbcType=TINYINT}
+			</if>
+			<if test="keywords!=null">
+				and o.order_number like "%"#{keywords,jdbcType=CHAR}"%"
+			</if>
+			<if test="startTime!=null and endTime!=null">
+				and o.create_date_time &gt; #{startTime,jdbcType=TIMESTAMP} and o.create_date_time &lt; #{endTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+	<select id="queryCustomerOrder" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order as o
+		<where>
+			<if test="status!=null">
+				and status in
+				<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="invalid!=null">
+				and o.invalid = #{invalid,jdbcType=TINYINT}
+			</if>
+			<if test="payType!=null">
+				and o.pay_type=#{payType}
+			</if>
+			<if test="isCustomMade!=null">
+				and is_custom_made =#{isCustomMade,jdbcType=TINYINT}
+			</if>
+			<if test="keywords!=null">
+				and o.order_number like "%"#{keywords,jdbcType=CHAR}"%"
+			</if>
+			<if test="startTime!=null and endTime!=null">
+				and o.create_date_time &gt; #{startTime,jdbcType=TIMESTAMP} and o.create_date_time &lt; #{endTime,jdbcType=TIMESTAMP}
+			</if>
+			order by o.id desc
+			limit #{numbers,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</where>
+	</select>
+	<!-- 私人订制列表 end -->
+
+	<!-- 查询拆分后订单信息列表 start -->
+	<select id="queryParentOrders" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order
+		where parent_order_number = #{orderNumber,jdbcType=CHAR}
+		order by id desc 
+	</select>
+
+	<!-- 查询拆分后订单信息列表 end -->
+
+	<!-- 任务调度查询start -->
+	<select id="queryTaskOrders" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order
+		where status = #{status,jdbcType=TINYINT} and create_date_time &lt; #{date,jdbcType=TIMESTAMP}
+	</select>
+	<!-- 任务调度查询end -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from tbl_mall_order
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.papabear.order.entity.MallOrder" keyProperty="id" useGeneratedKeys="true">
+    insert into tbl_mall_order (id, order_number, parent_order_number, 
+      pay_number, express_id, remark, 
+      user_id, status, create_date_time, 
+      update_time, invalid, total_num, 
+      total_price, discount_price, is_custom_made, 
+      is_use_inviteCode, source, user_name, 
+      bx_num, is_make_bill, is_install, 
+      front_money, is_use_front_money)
+    values (#{id,jdbcType=BIGINT}, #{orderNumber,jdbcType=CHAR}, #{parentOrderNumber,jdbcType=CHAR}, 
+      #{payNumber,jdbcType=CHAR}, #{expressId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{createDateTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{invalid,jdbcType=TINYINT}, #{totalNum,jdbcType=INTEGER}, 
+      #{totalPrice,jdbcType=REAL}, #{discountPrice,jdbcType=REAL}, #{isCustomMade,jdbcType=TINYINT}, 
+      #{isUseInvitecode,jdbcType=TINYINT}, #{source,jdbcType=TINYINT}, #{userName,jdbcType=VARCHAR}, 
+      #{bxNum,jdbcType=VARCHAR}, #{isMakeBill,jdbcType=TINYINT}, #{isInstall,jdbcType=TINYINT}, 
+      #{frontMoney,jdbcType=REAL}, #{isUseFrontMoney,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallOrder" keyProperty="id" useGeneratedKeys="true">
+    insert into tbl_mall_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="parentOrderNumber != null" >
+        parent_order_number,
+      </if>
+      <if test="payNumber != null" >
+        pay_number,
+      </if>
+      <if test="expressId != null" >
+        express_id,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="invalid != null" >
+        invalid,
+      </if>
+      <if test="totalNum != null" >
+        total_num,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="discountPrice != null" >
+        discount_price,
+      </if>
+      <if test="isCustomMade != null" >
+        is_custom_made,
+      </if>
+      <if test="isUseInvitecode != null" >
+        is_use_inviteCode,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="bxNum != null" >
+        bx_num,
+      </if>
+      <if test="isMakeBill != null" >
+        is_make_bill,
+      </if>
+      <if test="isInstall != null" >
+        is_install,
+      </if>
+      <if test="frontMoney != null" >
+        front_money,
+      </if>
+      <if test="isUseFrontMoney != null" >
+        is_use_front_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="parentOrderNumber != null" >
+        #{parentOrderNumber,jdbcType=CHAR},
+      </if>
+      <if test="payNumber != null" >
+        #{payNumber,jdbcType=CHAR},
+      </if>
+      <if test="expressId != null" >
+        #{expressId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null" >
+        #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="totalNum != null" >
+        #{totalNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="discountPrice != null" >
+        #{discountPrice,jdbcType=REAL},
+      </if>
+      <if test="isCustomMade != null" >
+        #{isCustomMade,jdbcType=TINYINT},
+      </if>
+      <if test="isUseInvitecode != null" >
+        #{isUseInvitecode,jdbcType=TINYINT},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=TINYINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="bxNum != null" >
+        #{bxNum,jdbcType=VARCHAR},
+      </if>
+      <if test="isMakeBill != null" >
+        #{isMakeBill,jdbcType=TINYINT},
+      </if>
+      <if test="isInstall != null" >
+        #{isInstall,jdbcType=TINYINT},
+      </if>
+      <if test="frontMoney != null" >
+        #{frontMoney,jdbcType=REAL},
+      </if>
+      <if test="isUseFrontMoney != null" >
+        #{isUseFrontMoney,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallOrder" >
+    update tbl_mall_order
+    <set >
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="parentOrderNumber != null" >
+        parent_order_number = #{parentOrderNumber,jdbcType=CHAR},
+      </if>
+      <if test="payNumber != null" >
+        pay_number = #{payNumber,jdbcType=CHAR},
+      </if>
+      <if test="expressId != null" >
+        express_id = #{expressId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null" >
+        invalid = #{invalid,jdbcType=TINYINT},
+      </if>
+      <if test="totalNum != null" >
+        total_num = #{totalNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="discountPrice != null" >
+        discount_price = #{discountPrice,jdbcType=REAL},
+      </if>
+      <if test="isCustomMade != null" >
+        is_custom_made = #{isCustomMade,jdbcType=TINYINT},
+      </if>
+      <if test="isUseInvitecode != null" >
+        is_use_inviteCode = #{isUseInvitecode,jdbcType=TINYINT},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=TINYINT},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="bxNum != null" >
+        bx_num = #{bxNum,jdbcType=VARCHAR},
+      </if>
+      <if test="isMakeBill != null" >
+        is_make_bill = #{isMakeBill,jdbcType=TINYINT},
+      </if>
+      <if test="isInstall != null" >
+        is_install = #{isInstall,jdbcType=TINYINT},
+      </if>
+      <if test="frontMoney != null" >
+        front_money = #{frontMoney,jdbcType=REAL},
+      </if>
+      <if test="isUseFrontMoney != null" >
+        is_use_front_money = #{isUseFrontMoney,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallOrder" >
+    update tbl_mall_order
+    set order_number = #{orderNumber,jdbcType=CHAR},
+      parent_order_number = #{parentOrderNumber,jdbcType=CHAR},
+      pay_number = #{payNumber,jdbcType=CHAR},
+      express_id = #{expressId,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=TINYINT},
+      total_num = #{totalNum,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=REAL},
+      discount_price = #{discountPrice,jdbcType=REAL},
+      is_custom_made = #{isCustomMade,jdbcType=TINYINT},
+      is_use_inviteCode = #{isUseInvitecode,jdbcType=TINYINT},
+      source = #{source,jdbcType=TINYINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      bx_num = #{bxNum,jdbcType=VARCHAR},
+      is_make_bill = #{isMakeBill,jdbcType=TINYINT},
+      is_install = #{isInstall,jdbcType=TINYINT},
+      front_money = #{frontMoney,jdbcType=REAL},
+      is_use_front_money = #{isUseFrontMoney,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+	<update id="updateOrder">
+		update tbl_mall_order
+		<set>
+			<if test="expressId != null">
+				express_id = #{expressId,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="discountPrice != null">
+				discount_price = #{discountPrice,jdbcType=REAL},
+			</if>
+		</set>
+		where order_number = #{orderNumber,jdbcType=CHAR}
+	</update>
+</mapper>

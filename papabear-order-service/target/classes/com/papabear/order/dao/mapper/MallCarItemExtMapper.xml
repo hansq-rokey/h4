@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallCarItemExtDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallCarItemExt" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="cat_item_id" property="catItemId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_model_format_id" property="productModelFormatId" jdbcType="BIGINT" />
+    <result column="format_ext_value" property="formatExtValue" jdbcType="REAL" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="format_ext_id" property="formatExtId" jdbcType="BIGINT" />
+    <result column="identify" property="identify" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, cat_item_id, product_id, product_model_format_id, format_ext_value, 
+    format_ext_id, identify,property_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_car_item_ext
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="queryCarItemExts" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_car_item_ext
+    where user_id = #{userId,jdbcType=BIGINT} and cat_item_id=#{carItemId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_car_item_ext
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByCarItemId" parameterType="java.lang.Long" >
+    delete from tbl_mall_car_item_ext
+    where cat_item_id = #{carItemId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallCarItemExt" >
+    insert into tbl_mall_car_item_ext (id, user_id, cat_item_id, 
+      product_id, product_model_format_id, format_ext_value, 
+      format_ext_id, identify,property_name)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{catItemId,jdbcType=BIGINT}, 
+      #{productId,jdbcType=BIGINT}, #{productModelFormatId,jdbcType=BIGINT}, #{formatExtValue,jdbcType=REAL}, 
+      #{formatExtId,jdbcType=BIGINT}, #{identify,jdbcType=CHAR}, #{propertyName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallCarItemExt" >
+    insert into tbl_mall_car_item_ext
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="catItemId != null" >
+        cat_item_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id,
+      </if>
+      <if test="formatExtValue != null" >
+        format_ext_value,
+      </if>
+      <if test="formatExtId != null" >
+        format_ext_id,
+      </if>
+      <if test="identify != null" >
+        identify,
+      </if>
+      <if test="propertyName != null" >
+        property_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="catItemId != null" >
+        #{catItemId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="formatExtValue != null" >
+        #{formatExtValue,jdbcType=REAL},
+      </if>
+      <if test="formatExtId != null" >
+        #{formatExtId,jdbcType=BIGINT},
+      </if>
+      <if test="identify != null" >
+        #{identify,jdbcType=CHAR},
+      </if>
+      <if test="propertyName != null" >
+        #{propertyName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallCarItemExt" >
+    update tbl_mall_car_item_ext
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="catItemId != null" >
+        cat_item_id = #{catItemId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="formatExtValue != null" >
+        format_ext_value = #{formatExtValue,jdbcType=REAL},
+      </if>
+      <if test="formatExtId != null" >
+        format_ext_id = #{formatExtId,jdbcType=BIGINT},
+      </if>
+      <if test="identify != null" >
+        identify = #{identify,jdbcType=CHAR},
+      </if>
+      <if test="propertyName != null" >
+        property_name = #{propertyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallCarItemExt" >
+    update tbl_mall_car_item_ext
+    set user_id = #{userId,jdbcType=BIGINT},
+      cat_item_id = #{catItemId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      format_ext_value = #{formatExtValue,jdbcType=REAL},
+      format_ext_id = #{formatExtId,jdbcType=BIGINT},
+      identify = #{identify,jdbcType=CHAR},
+      property_name = #{propertyName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

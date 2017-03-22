@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallOrderItemExtendDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallOrderItemExtend" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="order_number" property="orderNumber" jdbcType="CHAR" />
+    <result column="order_item_id" property="orderItemId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_model_format_id" property="productModelFormatId" jdbcType="BIGINT" />
+    <result column="length" property="length" jdbcType="REAL" />
+    <result column="width" property="width" jdbcType="REAL" />
+    <result column="height" property="height" jdbcType="REAL" />
+    <result column="ground_area" property="groundArea" jdbcType="REAL" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="ground_area_unit" property="groundAreaUnit" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, order_number, order_item_id, product_id, product_model_format_id, length, 
+    width, height, ground_area, unit, ground_area_unit
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_order_item_extend
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  	<select id="getOrderItemExtend" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbl_mall_order_item_extend
+		where user_id=#{userId,jdbcType=BIGINT} and order_item_id = #{orderItemId,jdbcType=BIGINT}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_order_item_extend
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallOrderItemExtend" >
+    insert into tbl_mall_order_item_extend (id, user_id, order_number, 
+      order_item_id, product_id, product_model_format_id, 
+      length, width, height, ground_area, 
+      unit, ground_area_unit)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderNumber,jdbcType=CHAR}, 
+      #{orderItemId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{productModelFormatId,jdbcType=BIGINT}, 
+      #{length,jdbcType=REAL}, #{width,jdbcType=REAL}, #{height,jdbcType=REAL}, #{groundArea,jdbcType=REAL}, 
+      #{unit,jdbcType=VARCHAR}, #{groundAreaUnit,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallOrderItemExtend" >
+    insert into tbl_mall_order_item_extend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="orderItemId != null" >
+        order_item_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="width != null" >
+        width,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="groundArea != null" >
+        ground_area,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="groundAreaUnit != null" >
+        ground_area_unit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="orderItemId != null" >
+        #{orderItemId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=REAL},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=REAL},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=REAL},
+      </if>
+      <if test="groundArea != null" >
+        #{groundArea,jdbcType=REAL},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="groundAreaUnit != null" >
+        #{groundAreaUnit,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallOrderItemExtend" >
+    update tbl_mall_order_item_extend
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="orderItemId != null" >
+        order_item_id = #{orderItemId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=REAL},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=REAL},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=REAL},
+      </if>
+      <if test="groundArea != null" >
+        ground_area = #{groundArea,jdbcType=REAL},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="groundAreaUnit != null" >
+        ground_area_unit = #{groundAreaUnit,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallOrderItemExtend" >
+    update tbl_mall_order_item_extend
+    set user_id = #{userId,jdbcType=BIGINT},
+      order_number = #{orderNumber,jdbcType=CHAR},
+      order_item_id = #{orderItemId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      length = #{length,jdbcType=REAL},
+      width = #{width,jdbcType=REAL},
+      height = #{height,jdbcType=REAL},
+      ground_area = #{groundArea,jdbcType=REAL},
+      unit = #{unit,jdbcType=VARCHAR},
+      ground_area_unit = #{groundAreaUnit,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

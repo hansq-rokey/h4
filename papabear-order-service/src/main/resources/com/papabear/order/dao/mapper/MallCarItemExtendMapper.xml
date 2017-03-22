@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallCarItemExtendDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallCarItemExtend" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="cat_item_id" property="catItemId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_model_format_id" property="productModelFormatId" jdbcType="BIGINT" />
+    <result column="length" property="length" jdbcType="REAL" />
+    <result column="width" property="width" jdbcType="REAL" />
+    <result column="height" property="height" jdbcType="REAL" />
+    <result column="ground_area" property="groundArea" jdbcType="REAL" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="grount_aren_unit" property="grountArenUnit" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, cat_item_id, product_id, product_model_format_id, length, width, height, 
+    ground_area, unit, grount_aren_unit
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_car_item_extend
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getCarItemExtend" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_car_item_extend
+    where user_id = #{userId,jdbcType=BIGINT} and cat_item_id=#{carItemId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByCarItemId" parameterType="java.lang.Long" >
+    delete from tbl_mall_car_item_extend
+    where cat_item_id = #{carItemId,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_car_item_extend
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallCarItemExtend" >
+    insert into tbl_mall_car_item_extend (id, user_id, cat_item_id, 
+      product_id, product_model_format_id, length, 
+      width, height, ground_area, unit, 
+      grount_aren_unit)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{catItemId,jdbcType=BIGINT}, 
+      #{productId,jdbcType=BIGINT}, #{productModelFormatId,jdbcType=BIGINT}, #{length,jdbcType=REAL}, 
+      #{width,jdbcType=REAL}, #{height,jdbcType=REAL}, #{groundArea,jdbcType=REAL}, #{unit,jdbcType=VARCHAR}, 
+      #{grountArenUnit,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallCarItemExtend" >
+    insert into tbl_mall_car_item_extend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="catItemId != null" >
+        cat_item_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="width != null" >
+        width,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="groundArea != null" >
+        ground_area,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="grountArenUnit != null" >
+        grount_aren_unit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="catItemId != null" >
+        #{catItemId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=REAL},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=REAL},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=REAL},
+      </if>
+      <if test="groundArea != null" >
+        #{groundArea,jdbcType=REAL},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="grountArenUnit != null" >
+        #{grountArenUnit,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallCarItemExtend" >
+    update tbl_mall_car_item_extend
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="catItemId != null" >
+        cat_item_id = #{catItemId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=REAL},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=REAL},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=REAL},
+      </if>
+      <if test="groundArea != null" >
+        ground_area = #{groundArea,jdbcType=REAL},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="grountArenUnit != null" >
+        grount_aren_unit = #{grountArenUnit,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallCarItemExtend" >
+    update tbl_mall_car_item_extend
+    set user_id = #{userId,jdbcType=BIGINT},
+      cat_item_id = #{catItemId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      length = #{length,jdbcType=REAL},
+      width = #{width,jdbcType=REAL},
+      height = #{height,jdbcType=REAL},
+      ground_area = #{groundArea,jdbcType=REAL},
+      unit = #{unit,jdbcType=VARCHAR},
+      grount_aren_unit = #{grountArenUnit,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.papabear.order.dao.MallAfterSalesServiceItemDao" >
+  <resultMap id="BaseResultMap" type="com.papabear.order.entity.MallAfterSalesServiceItem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_model_format_id" property="productModelFormatId" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="REAL" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="unit_price" property="unitPrice" jdbcType="REAL" />
+    <result column="discount_unit_price" property="discountUnitPrice" jdbcType="REAL" />
+    <result column="service_id" property="serviceId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, product_model_format_id, num, user_id, unit_price, discount_unit_price, 
+    service_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="queryAfterSalesServiceItemByServiceId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_mall_after_sales_service_item
+    where service_id = #{serviceId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_mall_after_sales_service_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.papabear.order.entity.MallAfterSalesServiceItem" >
+    insert into tbl_mall_after_sales_service_item (id, product_id, product_model_format_id, 
+      num, user_id, unit_price, 
+      discount_unit_price, service_id)
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{productModelFormatId,jdbcType=BIGINT}, 
+      #{num,jdbcType=REAL}, #{userId,jdbcType=BIGINT}, #{unitPrice,jdbcType=REAL}, 
+      #{discountUnitPrice,jdbcType=REAL}, #{serviceId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.papabear.order.entity.MallAfterSalesServiceItem" >
+    insert into tbl_mall_after_sales_service_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="discountUnitPrice != null" >
+        discount_unit_price,
+      </if>
+      <if test="serviceId != null" >
+        service_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=REAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=REAL},
+      </if>
+      <if test="discountUnitPrice != null" >
+        #{discountUnitPrice,jdbcType=REAL},
+      </if>
+      <if test="serviceId != null" >
+        #{serviceId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.papabear.order.entity.MallAfterSalesServiceItem" >
+    update tbl_mall_after_sales_service_item
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productModelFormatId != null" >
+        product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=REAL},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=REAL},
+      </if>
+      <if test="discountUnitPrice != null" >
+        discount_unit_price = #{discountUnitPrice,jdbcType=REAL},
+      </if>
+      <if test="serviceId != null" >
+        service_id = #{serviceId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.papabear.order.entity.MallAfterSalesServiceItem" >
+    update tbl_mall_after_sales_service_item
+    set product_id = #{productId,jdbcType=BIGINT},
+      product_model_format_id = #{productModelFormatId,jdbcType=BIGINT},
+      num = #{num,jdbcType=REAL},
+      user_id = #{userId,jdbcType=BIGINT},
+      unit_price = #{unitPrice,jdbcType=REAL},
+      discount_unit_price = #{discountUnitPrice,jdbcType=REAL},
+      service_id = #{serviceId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
